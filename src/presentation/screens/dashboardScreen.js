@@ -6,9 +6,8 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
-  SectionList,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import FontistoIcons from "react-native-vector-icons/Fontisto";
@@ -23,7 +22,7 @@ const formatDate = (dateString) => {
   return format(date, "dd MMMM yyyy");
 };
 
-export default function DasboardScreen() {
+export default function DasboardScreen({ navigation }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleEye = () => {
@@ -31,7 +30,7 @@ export default function DasboardScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingTop: 20, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView>
         <View style={styles.appBar}>
           <View
@@ -143,6 +142,9 @@ export default function DasboardScreen() {
                 shadowRadius: 10,
                 elevation: 10,
               }}
+              onPress={() => {
+                navigation.navigate("TopUp");
+              }}
             >
               <FontistoIcons name="plus-a" size={30} color="white" />
             </TouchableOpacity>
@@ -159,6 +161,9 @@ export default function DasboardScreen() {
                 shadowOpacity: 0.5,
                 shadowRadius: 10,
                 elevation: 10,
+              }}
+              onPress={() => {
+                navigation.navigate("Transfer");
               }}
             >
               <FontistoIcons name="paper-plane" size={30} color="white" />
@@ -180,9 +185,9 @@ export default function DasboardScreen() {
           </View>
           <View style={{ padding: 20 }}>
             <FlatList
+              data={transactionData}
               nestedScrollEnabled
               scrollEnabled={false}
-              data={transactionData}
               renderItem={({ item }) => (
                 <View
                   style={{

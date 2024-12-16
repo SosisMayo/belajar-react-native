@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image } from "react-native";
+import Form from "../components/Form";
 
 const SignUpScreen = ({ navigation }) => {
   return (
@@ -16,37 +9,7 @@ const SignUpScreen = ({ navigation }) => {
         source={require("../../../assets/walled.png")}
         style={{ width: 233, height: 57 }}
       ></Image>
-      <View>
-        <TextInput style={styles.input} placeholder="Fullname" />
-        <TextInput style={styles.input} placeholder="Email" />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-        />
-        <TextInput style={styles.input} placeholder="Avatar Url" />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate("Dashboard");
-          }}
-        >
-          <Text
-            style={{
-              color: "white",
-              textAlign: "center",
-              fontSize: 20,
-              fontWeight: "bold",
-            }}
-          >
-            Sign Up
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
-          Already have an account?
-          <Text style={{ color: "#19918f" }}> Login</Text>
-        </Text>
-      </View>
+      <Form state={"register"} navigation={navigation} />
     </View>
   );
 };

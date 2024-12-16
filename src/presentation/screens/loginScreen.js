@@ -1,50 +1,17 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image } from "react-native";
+import Form from "../components/Form";
+import { useNavigation } from "@react-navigation/native";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Image
         source={require("../../../assets/walled.png")}
         style={{ width: 233, height: 57 }}
       ></Image>
-      <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Email" />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate("Dashboard");
-          }}
-        >
-          <Text
-            style={{
-              color: "white",
-              textAlign: "center",
-              fontSize: 20,
-              fontWeight: "bold",
-            }}
-          >
-            Login
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.link} onPress={() => navigation.navigate("SignUp")}>
-          Don't have an account?
-          <Text style={{ color: "#19918f" }}> Register Here</Text>
-        </Text>
-      </View>
+      <Form state={"login"} navigation={navigation} />
     </View>
   );
 };
