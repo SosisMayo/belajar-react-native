@@ -57,7 +57,7 @@ const AppNavigator = () => {
           screenOptions={{ headerShown: false }}
         />
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignUpScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

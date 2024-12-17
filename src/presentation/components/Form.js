@@ -8,15 +8,56 @@ import {
   ScrollView,
 } from "react-native";
 import { useState } from "react";
+import { register } from "../../api/restApi";
+import { login } from "../../api/restApi";
+import AsyncStorage from "@react-native-async-storage/async-storage/";
 
 const Form = ({ navigation, state }) => {
   const [errors, setErrors] = useState({});
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [fullname, setFullname] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const [isSelected, setSelection] = useState(false);
+
+  const handleSubmit = () => {
+    if (errors.email || errors.password || errors.fullname) {
+      return alert("Please fill out all the fields correctly");
+    }
+    if (state === "register") {
+      handleRegister();
+    } else if (state === "login") {
+      handleLogin();
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      const { data } = await register(
+        fullname,
+        email,
+        password,
+        phoneNumber,
+        avatarUrl
+      );
+      navigation.navigate("Login");
+    } catch (error) {
+      return alert(error);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      const { token } = await login(email, password);
+      AsyncStorage.setItem("userToken", token);
+      navigation.navigate("Dashboards");
+    } catch (error) {
+      return alert(error);
+    }
+  };
+
   const validateEmail = (text) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(text)) {
@@ -63,15 +104,20 @@ const Form = ({ navigation, state }) => {
   return (
     <View style={{ width: "100%" }}>
       {state === "register" ? (
-        <TextInput
-          style={styles.input}
-          placeholder="Fullname"
-          value={fullname}
-          onChangeText={(text) => {
-            setFullname(text);
-            validateFullname(text);
-          }}
-        />
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Fullname"
+            value={fullname}
+            onChangeText={(text) => {
+              setFullname(text);
+              validateFullname(text);
+            }}
+          />
+          {errors.fullname && (
+            <Text style={styles.error}>{errors.fullname}</Text>
+          )}
+        </>
       ) : (
         ""
       )}
@@ -202,7 +248,7 @@ const Form = ({ navigation, state }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate("Dashboards");
+          handleSubmit();
         }}
       >
         <Text
